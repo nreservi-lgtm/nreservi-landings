@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questionnaire Partenaire — Nreservi</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #1a1a1a; background: #f4f6fa; min-height: 100vh; padding: 32px 16px; }
+  .wrapper { max-width: 660px; margin: 0 auto; }
+  .header { background: #1a56db; color: #fff; border-radius: 10px 10px 0 0; padding: 26px 32px 20px; }
+  .header .logo { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .header h1 { font-size: 15px; font-weight: 400; opacity: 0.88; }
+  .header p { font-size: 12px; opacity: 0.7; margin-top: 4px; }
+  .progress-wrap { background: #fff; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; padding: 14px 32px 0; }
+  .prog-bar { height: 4px; background: #e2e8f0; border-radius: 2px; margin-bottom: 10px; }
+  .prog-fill { height: 100%; border-radius: 2px; background: #1a56db; transition: width .3s; width: 0%; }
+  .prog-label { font-size: 12px; color: #718096; text-align: right; padding-bottom: 10px; }
+  .section { background: #fff; border: 1px solid #e2e8f0; border-top: none; padding: 22px 32px; }
+  .section:last-of-type { border-radius: 0 0 10px 10px; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; color: #1a56db; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1.5px solid #e6effd; }
+  .badge { width: 22px; height: 22px; border-radius: 50%; background: #e6effd; color: #1a56db; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .question { margin-bottom: 22px; }
+  .q-label { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 5px; }
+  .q-hint { font-size: 12px; color: #718096; margin-bottom: 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 6px 14px; border: 1px solid #cbd5e0; border-radius: 20px; font-size: 12px; color: #4a5568; cursor: pointer; transition: all .15s; background: #fff; user-select: none; }
+  .chip:hover { border-color: #1a56db; color: #1a56db; }
+  .chip.active { background: #e6effd; border-color: #1a56db; color: #1a56db; font-weight: 600; }
+  .chip.disabled { opacity: 0.4; cursor: not-allowed; }
+  .text-input { width: 100%; padding: 9px 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 13px; color: #1a1a1a; outline: none; transition: border-color .15s; }
+  .text-input:focus { border-color: #1a56db; }
+  .submit-wrap { text-align: center; padding: 20px 0 4px; }
+  .submit-btn { background: #1a56db; color: #fff; border: none; border-radius: 8px; padding: 13px 44px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s; }
+  .submit-btn:hover { background: #1649bb; }
+  .submit-btn:disabled { background: #93aee8; cursor: not-allowed; }
+  .note { font-size: 12px; color: #718096; margin-top: 10px; }
+  .success { display: none; background: #f0fff4; border: 1px solid #9ae6b4; border-radius: 10px; padding: 28px 24px; text-align: center; color: #276749; font-size: 14px; line-height: 1.9; margin-top: 20px; }
+  .error-msg { display: none; background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 12px 16px; color: #c53030; font-size: 13px; margin-top: 12px; }
+  hr.sep { border: none; border-top: 1px solid #f0f0f0; margin: 18px 0; }
+  @media (max-width: 500px) { .section { padding: 18px 16px; } .header { padding: 20px 16px; } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="logo">Nreservi</div>
+    <h1>Questionnaire partenaire B2B</h1>
+    <p>2 minutes · 10 questions · Aide à personnaliser votre espace</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog"></div></div>
+    <div class="prog-label" id="prog-label">0 / 10 complétées</div>
+  </div>
+
+  <form id="qForm" onsubmit="handleSubmit(event)">
+
+    <!-- AXE 1 -->
+    <div class="section">
+      <div class="section-title"><div class="badge">1</div> Marché & destinations</div>
+
+      <div class="question">
+        <div class="q-label">Sur quels marchés opère principalement votre agence ?</div>
+        <div class="q-hint">Plusieurs choix possibles</div>
+        <div class="chips" data-qid="marches" data-multi="true">
+          <div class="chip" data-v="Algérie">Hôtels Algérie</div>
+          <div class="chip" data-v="Tunisie">Tunisie</div>
+          <div class="chip" data-v="Turquie">Turquie</div>
+          <div class="chip" data-v="Dubai">Dubai / Émirats</div>
+          <div class="chip" data-v="Omra">Omra / Arabie Saoudite</div>
+          <div class="chip" data-v="France">France</div>
+          <div class="chip" data-v="Autre">Autre</div>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="question">
+        <div class="q-label">Quelle destination représente le plus gros volume de vos réservations ?</div>
+        <div class="q-hint">Une seule réponse</div>
+        <div class="chips" data-qid="destination_principale" data-multi="false">
+          <div class="chip" data-v="Algérie">Algérie</div>
+          <div class="chip" data-v="Tunisie">Tunisie</div>
+          <div class="chip" data-v="Turquie">Turquie</div>
+          <div class="chip" data-v="Dubai">Dubai</div>
+          <div class="chip" data-v="Omra">Omra</div>
+          <div class="chip" data-v="France">France</div>
+          <div class="chip" data-v="Autre">Autre</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AXE 2 -->
+    <div class="section">
+      <div class="section-title"><div class="badge">2</div> Profil clientèle</div>
+
+      <div class="question">
+        <div class="q-label">Quel est le profil principal de vos clients ?</div>
+        <div class="q-hint">Plusieurs choix possibles</div>
+        <div class="chips" data-qid="profil_clients" data-multi="true">
+          <div class="chip" data-v="Particuliers loisirs">Particuliers — loisirs</div>
+          <div class="chip" data-v="Entreprises">Entreprises — déplacements</div>
+          <div class="chip" data-v="Groupes séminaires">Groupes &amp; séminaires</div>
+          <div class="chip" data-v="Omra Hajj">Voyageurs Omra / Hajj</div>
+          <div class="chip" data-v="Familles">Familles</div>
+          <div class="chip" data-v="Jeunes étudiants">Jeunes / étudiants</div>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="question">
+        <div class="q-label">Quelle est la taille moyenne d'un groupe que vous gérez ?</div>
+        <div class="q-hint">Une seule réponse</div>
+        <div class="chips" data-qid="taille_groupe" data-multi="false">
+          <div class="chip" data-v="1 à 4 personnes">1 à 4 personnes</div>
+          <div class="chip" data-v="5 à 10 personnes">5 à 10 personnes</div>
+          <div class="chip" data-v="11 à 15 personnes">11 à 15 personnes</div>
+          <div class="chip" data-v="16 et plus">16 personnes et plus</div>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="question">
+        <div class="q-label">Vos clients réservent généralement combien de temps à l'avance ?</div>
+        <div class="q-hint">Une seule réponse</div>
+        <div class="chips" data-qid="delai_reservation" data-multi="false">
+          <div class="chip" data-v="Dernière minute">Dernière minute (- 3 jours)</div>
+          <div class="chip" data-v="1 à 2 semaines">1 à 2 semaines avant</div>
+          <div class="chip" data-v="Environ 1 mois">Environ 1 mois avant</div>
+          <div class="chip" data-v="Plus d'1 mois">Plus d'1 mois avant</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AXE 3 -->
+    <div class="section">
+      <div class="section-title"><div class="badge">3</div> Volume & potentiel commercial</div>
+
+      <div class="question">
+        <div class="q-label">Combien de dossiers hôtel traitez-vous en moyenne par mois ?</div>
+        <div class="q-hint">Une seule réponse</div>
+        <div class="chips" data-qid="volume_mensuel" data-multi="false">
+          <div class="chip" data-v="Moins de 10">Moins de 10</div>
+          <div class="chip" data-v="10 à 30">10 à 30</div>
+          <div class="chip" data-v="30 à 100">30 à 100</div>
+          <div class="chip" data-v="Plus de 100">Plus de 100</div>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="question">
+        <div class="q-label">Quel chiffre d'affaires mensuel visez-vous via Nreservi ?</div>
+        <div class="q-hint">Estimation — nous aide à personnaliser votre offre</div>
+        <div class="chips" data-qid="ca_previsionnel" data-multi="false">
+          <div class="chip" data-v="Moins de 1 000 000 DZD">Moins de 1 000 000 DZD</div>
+          <div class="chip" data-v="1 000 000 à 5 000 000 DZD">1 000 000 à 5 000 000 DZD</div>
+          <div class="chip" data-v="5 000 000 à 10 000 000 DZD">5 000 000 à 10 000 000 DZD</div>
+          <div class="chip" data-v="Plus de 10 000 000 DZD">Plus de 10 000 000 DZD</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AXE 4 -->
+    <div class="section">
+      <div class="section-title"><div class="badge">4</div> Préférences de travail</div>
+
+      <div class="question">
+        <div class="q-label">À quelle fréquence avez-vous besoin d'assistance ou de support ?</div>
+        <div class="q-hint">Une seule réponse</div>
+        <div class="chips" data-qid="besoin_support" data-multi="false">
+          <div class="chip" data-v="Souvent — contact direct préféré">Souvent — je préfère un contact direct</div>
+          <div class="chip" data-v="Parfois — en cas de problème">Parfois — en cas de problème</div>
+          <div class="chip" data-v="Rarement — autonome">Rarement — je suis autonome</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AXE 5 -->
+    <div class="section">
+      <div class="section-title"><div class="badge">5</div> Attentes & besoins spécifiques</div>
+
+      <div class="question">
+        <div class="q-label">Qu'est-ce qui est le plus important pour vous dans une plateforme B2B ?</div>
+        <div class="q-hint">Choisissez vos 2 priorités maximum</div>
+        <div class="chips" data-qid="priorites" data-multi="true" data-max="2">
+          <div class="chip" data-v="Prix compétitifs">Prix compétitifs</div>
+          <div class="chip" data-v="Large choix hôtels">Large choix d'hôtels</div>
+          <div class="chip" data-v="Confirmation rapide">Confirmation rapide</div>
+          <div class="chip" data-v="Support réactif">Support réactif</div>
+          <div class="chip" data-v="Interface simple">Interface simple</div>
+          <div class="chip" data-v="Commission élevée">Commission élevée</div>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="question" style="margin-bottom:0;">
+        <div class="q-label">Avez-vous des besoins particuliers à nous signaler ?</div>
+        <div class="q-hint">Optionnel — ex : hôtels proches aéroports, offres groupes, accès visa...</div>
+        <input type="text" class="text-input" id="besoins_specifiques" placeholder="Décrivez vos besoins..." oninput="updateProgress()">
+      </div>
+    </div>
+
+    <div class="section" style="border-radius: 0 0 10px 10px; border-top: none;">
+      <div class="submit-wrap">
+        <button type="submit" class="submit-btn" id="submitBtn">Envoyer mes réponses</button>
+        <p class="note">Vos réponses sont transmises en toute confidentialité à l'équipe Nreservi.</p>
+        <div id="errorMsg" class="error-msg">Une erreur est survenue. Contactez-nous à b2b@nreservi.com</div>
+      </div>
+      <div id="successMsg" class="success">
+        ✓ Merci pour vos réponses !<br>
+        Notre équipe commerciale vous contactera sous 24h pour personnaliser votre espace.<br><br>
+        <strong>b2b@nreservi.com &nbsp;|&nbsp; 0560 49 03 48</strong>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<script>
+const answers = {};
+const TOTAL = 10;
+
+function updateProgress() {
+  let count = Object.keys(answers).filter(k => answers[k] && answers[k].length > 0).length;
+  const txt = document.getElementById('besoins_specifiques')?.value?.trim();
+  if (txt) count = Math.min(count + 1, TOTAL);
+  const pct = Math.round((count / TOTAL) * 100);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = count + ' / ' + TOTAL + ' complétées';
+}
+
+document.querySelectorAll('.chips').forEach(group => {
+  const qid = group.dataset.qid;
+  const multi = group.dataset.multi === 'true';
+  const max = group.dataset.max ? parseInt(group.dataset.max) : 99;
+
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (chip.classList.contains('disabled')) return;
+      const val = chip.dataset.v;
+      if (!multi) {
+        group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        answers[qid] = [val];
+      } else {
+        const current = answers[qid] || [];
+        if (chip.classList.contains('active')) {
+          chip.classList.remove('active');
+          answers[qid] = current.filter(v => v !== val);
+          group.querySelectorAll('.chip').forEach(c => c.classList.remove('disabled'));
+        } else {
+          if (current.length >= max) return;
+          chip.classList.add('active');
+          answers[qid] = [...current, val];
+          if (answers[qid].length >= max) {
+            group.querySelectorAll('.chip:not(.active)').forEach(c => c.classList.add('disabled'));
+          }
+        }
+      }
+      updateProgress();
+    });
+  });
+});
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+
+  const txt = document.getElementById('besoins_specifiques')?.value?.trim();
+  if (txt) answers['besoins_specifiques'] = [txt];
+
+  const lines = Object.entries(answers).map(([k, v]) =>
+    k + ' : ' + v.join(', ')
+  ).join('\n');
+
+  const body = `QUESTIONNAIRE PARTENAIRE NRESERVI\n${'─'.repeat(40)}\n\n${lines}\n\n${'─'.repeat(40)}\nSoumis le : ${new Date().toLocaleString('fr-DZ')}`;
+
+  try {
+    const res = await fetch('https://formsubmit.co/ajax/nreservi@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Questionnaire Partenaire B2B — Nreservi',
+        _captcha: 'false',
+        _template: 'box',
+        message: body
+      })
+    });
+    const json = await res.json();
+    if (json.success === 'true' || json.success === true) {
+      document.getElementById('qForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } else { throw new Error(); }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer mes réponses';
+    document.getElementById('errorMsg').style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>

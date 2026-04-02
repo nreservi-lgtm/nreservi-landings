@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocole d'Accord — Nreservi / Agence de Voyage</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+  :root {
+    --blue: #1a3a6b; --blue-light: #e8eef7; --blue-mid: #2d5aa0;
+    --gold: #b8923a; --text: #1a1a1a; --muted: #5a5a5a;
+    --border: #c8d4e8; --page: #fafaf8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Serif 4', Georgia, serif; font-size: 13.5px; color: var(--text); background: #e8e8e4; line-height: 1.75; }
+  .print-btn { position: fixed; top: 20px; right: 24px; background: var(--blue); color: #fff; border: none; border-radius: 6px; padding: 10px 22px; font-family: 'Source Serif 4', serif; font-size: 13px; cursor: pointer; z-index: 100; transition: background .15s; }
+  .print-btn:hover { background: var(--blue-mid); }
+  .page { background: var(--page); max-width: 780px; margin: 32px auto; padding: 64px 72px; box-shadow: 0 4px 40px rgba(0,0,0,0.18); border-top: 6px solid var(--blue); position: relative; }
+  .doc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1.5px solid var(--border); }
+  .logo-name { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--blue); letter-spacing: 0.5px; }
+  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+  .logo-addr { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.7; }
+  .doc-ref { text-align: right; font-size: 11.5px; color: var(--muted); line-height: 1.9; }
+  .doc-ref strong { color: var(--blue); }
+  .doc-title { text-align: center; margin: 32px 0 28px; }
+  .doc-title h1 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--blue); letter-spacing: 2px; text-transform: uppercase; }
+  .title-line { width: 80px; height: 2px; background: var(--gold); margin: 10px auto 0; }
+  .parties { background: var(--blue-light); border-left: 3px solid var(--blue); border-radius: 0 6px 6px 0; padding: 18px 22px; margin: 24px 0; font-size: 13px; }
+  .underline-label { font-weight: 600; color: var(--blue); text-decoration: underline; margin-bottom: 12px; display: block; font-size: 12px; letter-spacing: 0.5px; }
+  .partie { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px dashed var(--border); }
+  .partie:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .partie-num { font-weight: 600; color: var(--blue); }
+  .fill { display: inline-block; border-bottom: 1.5px solid #555; min-width: 200px; color: var(--muted); font-style: italic; padding: 0 4px; }
+  .fill.lg { min-width: 320px; }
+  .fill.md { min-width: 150px; }
+  .fill.sm { min-width: 80px; }
+  .expose { margin: 20px 0; font-style: italic; color: var(--muted); font-size: 13px; padding: 14px 18px; border: 1px solid var(--border); border-radius: 6px; background: #f5f7fb; }
+  .article { margin: 22px 0; }
+  .article-title { font-family: 'Playfair Display', serif; font-size: 13.5px; font-weight: 600; color: var(--blue); text-decoration: underline; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .article p { margin-bottom: 8px; }
+  .article ul { padding-left: 20px; margin: 8px 0; }
+  .article ul li { margin-bottom: 6px; }
+  .bank-box { background: var(--blue-light); border: 1px solid var(--border); border-radius: 6px; padding: 14px 20px; margin: 12px 0; font-size: 13px; line-height: 2; }
+  .bank-box strong { color: var(--blue); }
+  .nda-box { background: #fafaf0; border: 1px solid #d4c88a; border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 10px 0; font-size: 12.5px; color: #4a3f1a; }
+  .warn-box { background: #fff8f0; border-left: 3px solid #e07020; border-radius: 0 6px 6px 0; padding: 12px 18px; margin: 10px 0; font-size: 12.5px; color: #5a3010; font-style: italic; }
+  .signatures { margin-top: 40px; padding-top: 24px; border-top: 1.5px solid var(--border); }
+  .sig-title { text-align: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
+  .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .sig-block { text-align: center; }
+  .sig-label { font-size: 12px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+  .sig-name { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .sig-zone { height: 80px; border-bottom: 1.5px solid #555; margin-bottom: 8px; position: relative; }
+  .sig-zone::after { content: 'Signature & cachet'; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #bbb; font-style: italic; white-space: nowrap; }
+  .sig-date { font-size: 11.5px; color: var(--muted); margin-top: 10px; }
+  .sig-date span { display: inline-block; border-bottom: 1px solid #aaa; min-width: 120px; text-align: center; }
+  .doc-footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; color: var(--muted); }
+  .footer-logo { font-family: 'Playfair Display', serif; font-weight: 600; color: var(--blue); font-size: 13px; }
+  @media print {
+    body { background: #fff; }
+    .print-btn { display: none; }
+    .page { margin: 0; padding: 48px 56px; box-shadow: none; max-width: 100%; border-top: 5px solid var(--blue); }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">Imprimer / Sauvegarder PDF</button>
+
+<div class="page">
+
+  <div class="doc-header">
+    <div class="logo-block">
+      <div class="logo-name">Nreservi</div>
+      <div class="logo-sub">Plateforme de reservation B2B &amp; B2C</div>
+      <div class="logo-addr">
+        208 chemin Sfindja (Ex Laperlier)<br>
+        Telemly, Alger-centre<br>
+        www.nreservi.pro
+      </div>
+    </div>
+    <div class="doc-ref">
+      <strong>Protocole d'accord</strong><br>
+      Reference : NRT-<span class="fill sm">______</span><br>
+      Date : <span class="fill sm">__ / __ / 2026</span><br>
+      Version 2026
+    </div>
+  </div>
+
+  <div class="doc-title">
+    <h1>Protocole d'Accord</h1>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="parties">
+    <span class="underline-label">Entre les soussignes ci-apres designes :</span>
+
+    <div class="partie">
+      <span class="partie-num">1) NET RESA TRAVEL (Nreservi)</span><br>
+      Ayant son siege social au : 208 chemin Sfindja (Ex Laperlier), Telemly, Alger-centre<br>
+      Representee par son Directeur General : <strong>M. Mustapha BENDALI-BRAHAM</strong><br>
+      <em>D'une part</em>
+    </div>
+
+    <div class="partie">
+      <span class="partie-num">2) <span class="fill lg">Denomination de l'agence partenaire</span></span><br>
+      Ayant son siege social a : <span class="fill lg">&nbsp;</span><br>
+      Representee par : <span class="fill md">&nbsp;</span> &mdash; M. / Mme : <span class="fill md">&nbsp;</span><br>
+      <em>D'autre part</em>
+    </div>
+  </div>
+
+  <div class="expose">
+    Net Resa Travel, agence de voyage exercant son activite de reservation d'hotels en ligne, et
+    <span class="fill md">&nbsp;</span>, agence de voyage implantee en Algerie, ont decide d'un commun accord d'etablir la presente convention afin de preciser les conditions de leur collaboration.
+  </div>
+
+  <!-- Article I -->
+  <div class="article">
+    <div class="article-title">Article I &mdash; Objet de la convention</div>
+    <p><span class="fill md">&nbsp;</span> confie, par le present protocole d'accord, la representation de l'ensemble ou d'une partie de ses activites a Net Resa Travel.</p>
+    <p>L'ensemble des activites est defini comme suit :</p>
+    <ul>
+      <li>Acces a la plateforme B2B <strong>www.nreservi.pro</strong> &mdash; plus de 100 000 hotels dans le monde</li>
+      <li>Hotels en Algerie, Tunisie et a l'international</li>
+      <li>Organisation sur demande de transferts et d'excursions</li>
+      <li>Organisation de circuits et de groupes speciaux</li>
+      <li>Conseil pour la recherche de nouvelles opportunites touristiques et hotelieres</li>
+      <li>Assistance des clients sur les lieux de sejour par un personnel qualifie</li>
+      <li>Net Resa Travel est tenue de sauvegarder les interets de l'agence partenaire sur toutes les destinations proposees</li>
+    </ul>
+  </div>
+
+  <!-- Article II -->
+  <div class="article">
+    <div class="article-title">Article II &mdash; Duree</div>
+    <p>Le present contrat est valide a compter de sa date de signature jusqu'au <strong>31 decembre 2026</strong>.</p>
+    <p>Il est renouvelable pour une duree de 2 ans par tacite reconduction, sauf preavis adresse par l'une des parties au moins 1 mois avant la date d'expiration du contrat.</p>
+  </div>
+
+  <!-- Article III -->
+  <div class="article">
+    <div class="article-title">Article III &mdash; Prestations fournies par Net Resa Travel</div>
+    <p><strong>a) Obligations de Net Resa Travel :</strong></p>
+    <ul>
+      <li>Creation d'un compte B2B donnant acces a la plateforme <strong>www.nreservi.pro</strong> avec confirmation aux tarifs preferentiels negocies a la signature du present contrat</li>
+      <li>Emission des vouchers et suivi des reservations par hotel, par vendeur ou par periode</li>
+      <li>Accomplissement des prestations definies a l'Article I avec la diligence due par un professionnel</li>
+      <li>En cas de delogement, Net Resa Travel s'engage a loger les clients dans un hotel equivalent &mdash; a defaut, une diminution de prix sera consentie ou une annulation sans frais sera proposee</li>
+    </ul>
+    <p style="margin-top:10px;"><strong>b) Limites de responsabilite :</strong></p>
+    <ul>
+      <li>Net Resa Travel agit en tant qu'intermediaire entre les clients et les prestataires de services (hoteliers, transporteurs...) et ne saurait etre tenue responsable de tout accident, blessure, dommage, perte, vol, changement d'horaires ou evenement independant de sa volonte</li>
+      <li>Aucun remboursement n'est effectue en cas d'interruption de sejour ou de circuit par le client</li>
+    </ul>
+  </div>
+
+  <!-- Article IV -->
+  <div class="article">
+    <div class="article-title">Article IV &mdash; Paiement &amp; avances</div>
+    <p>Les montants des differentes prestations fournies par Net Resa Travel seront deduits directement du depot de l'agence affiliee, constitue a l'avance soit par depot en especes au niveau de notre siege, soit par virement bancaire aux coordonnees ci-dessous. L'agence est tenue d'alimenter son compte avant epuisement afin d'assurer la continuite des reservations.</p>
+
+    <p style="margin-top:12px;"><strong>Echeances de reglement :</strong></p>
+    <p>Les reglements s'effectuent a raison de <strong>deux fois par mois</strong>, aux quinzaines, soit aux alentours du <strong>15 et du dernier jour calendaire</strong> de chaque mois. Tout solde debiteur constate a l'echeance doit etre regularise dans un delai maximum de <strong>48 heures</strong> suivant notification.</p>
+
+    <p style="margin-top:12px;"><strong>Sanctions en cas de depassement de delai :</strong></p>
+    <ul>
+      <li><strong>Premier incident :</strong> En cas de depassement du delai de reglement, Net Resa Travel se reserve le droit de proceder a une <strong>suspension temporaire</strong> du compte B2B de l'agence affiliee, sans preavis, et ce jusqu'a regularisation complete et justifiee du solde du. Toute reservation en cours demeure soumise aux conditions initiales.</li>
+      <li><strong>Non-paiement persistant ou recidive :</strong> En cas de non-regularisation dans les delais impartis, ou en cas de repetition des incidents de paiement, Net Resa Travel pourra proceder a la <strong>desactivation definitive</strong> du compte affilie, entrainant la resiliation de plein droit du present protocole d'accord, sans qu'il soit besoin d'une mise en demeure prealable et sans prejudice de tout recours en recouvrement des sommes dues.</li>
+    </ul>
+
+    <div class="warn-box">
+      Toute reactivation de compte suite a une suspension temporaire reste soumise a l'appreciation exclusive de Net Resa Travel et pourra etre conditionnee au versement d'un depot de garantie complementaire.
+    </div>
+
+    <p style="margin-top:14px;">Coordonnees bancaires :</p>
+    <div class="bank-box">
+      <strong>Banque :</strong> CPA &mdash; Agence Didouche Mourad, Alger<br>
+      <strong>Titulaire :</strong> BENDALI-BRAHAM Mustapha<br>
+      <strong>N&deg; de compte :</strong> 00400114400001138104
+    </div>
+  </div>
+
+  <!-- Article V -->
+  <div class="article">
+    <div class="article-title">Article V &mdash; Confidentialite et non-divulgation (NDA)</div>
+    <p>Les deux parties s'engagent mutuellement a traiter comme strictement confidentielles toutes les informations echangees dans le cadre de la presente convention, qu'elles soient d'ordre commercial, financier, technique ou operationnel, et ce quelle que soit leur forme (orale, ecrite, numerique).</p>
+    <ul>
+      <li><strong>Tarifs et conditions commerciales :</strong> Les tarifs preferentiels negocies, les conditions d'affiliation et les marges accordees constituent des informations commercialement sensibles. Ils ne peuvent en aucun cas etre communiques, partages ou divulgues a des tiers, concurrents ou partenaires exterieurs, sous quelque forme que ce soit.</li>
+      <li><strong>Acces a la plateforme :</strong> Les identifiants de connexion, parametres de compte et acces a la plateforme B2B sont strictement personnels et non transferables. Toute utilisation par un tiers non autorise engage la responsabilite exclusive de l'agence affiliee.</li>
+      <li><strong>Donnees clients :</strong> Chaque partie s'engage a proteger les donnees personnelles des voyageurs et a ne les utiliser qu'aux fins prevues par la presente convention, conformement a la reglementation en vigueur.</li>
+      <li><strong>Informations operationnelles :</strong> Toute information relative aux systemes, outils, procedures internes ou strategies commerciales de Net Resa Travel est confidentielle et ne peut etre reproduite, transmise ou exploitee sans accord ecrit prealable.</li>
+      <li><strong>Duree de l'obligation :</strong> L'obligation de confidentialite s'applique pendant toute la duree du present contrat et se prolonge pendant une periode de <strong>3 ans</strong> apres son expiration ou sa resiliation, quelle qu'en soit la cause.</li>
+      <li><strong>Sanction :</strong> Tout manquement a la presente clause engage la responsabilite de la partie fautive et pourra entrainer la resiliation immediate du protocole d'accord, sans prejudice des dommages et interets pouvant etre reclames devant les juridictions competentes.</li>
+    </ul>
+    <div class="nda-box">
+      La presente clause de confidentialite constitue un element essentiel et determinant du present protocole, sans lequel les parties n'auraient pas contracte.
+    </div>
+  </div>
+
+  <!-- Article VI -->
+  <div class="article">
+    <div class="article-title">Article VI &mdash; Clause attributive de competence</div>
+    <p>Tout litige ne a l'occasion de l'execution ou de l'inexecution des presentes sera regle a l'amiable entre les parties. Le cas echeant, il sera de la competence exclusive du <strong>Tribunal de Premiere Instance d'Alger</strong>.</p>
+  </div>
+
+  <!-- Signatures -->
+  <div class="signatures">
+    <div class="sig-title">Signatures des parties</div>
+    <div class="sig-grid">
+
+      <div class="sig-block">
+        <div class="sig-label">Net Resa Travel &mdash; Nreservi</div>
+        <div class="sig-name">M. Mustapha BENDALI-BRAHAM<br>Directeur General</div>
+        <div class="sig-zone"></div>
+        <div class="sig-date">Fait a Alger, le <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </div>
+
+      <div class="sig-block">
+        <div class="sig-label">L'agence partenaire</div>
+        <div class="sig-name"><span class="fill md">&nbsp;</span><br>Representant legal</div>
+        <div class="sig-zone"></div>
+        <div class="sig-date">Fait a <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, le <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <div class="footer-logo">Nreservi</div>
+    <div>208 chemin Sfindja, Telemly, Alger &nbsp;|&nbsp; b2b@nreservi.com &nbsp;|&nbsp; 0560 49 03 48</div>
+    <div>www.nreservi.pro</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiche Technique Partenaire — Nreservi</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #1a1a1a; background: #f4f6fa; min-height: 100vh; padding: 32px 16px; }
+  .wrapper { max-width: 680px; margin: 0 auto; }
+  .header { background: #1a56db; color: #fff; border-radius: 10px 10px 0 0; padding: 28px 32px 22px; }
+  .header .logo { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .header h1 { font-size: 16px; font-weight: 500; opacity: 0.9; }
+  .card { background: #fff; border: 1px solid #e2e8f0; padding: 28px 32px; }
+  .section-title { font-size: 13px; font-weight: 700; color: #1a56db; text-transform: uppercase; letter-spacing: 0.8px; margin: 0 0 18px; padding-bottom: 8px; border-bottom: 2px solid #e6effd; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: #4a5568; margin-bottom: 5px; }
+  .field input, .field select { width: 100%; padding: 9px 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; color: #1a1a1a; background: #fff; transition: border-color .15s; outline: none; }
+  .field input:focus, .field select:focus { border-color: #1a56db; box-shadow: 0 0 0 3px rgba(26,86,219,0.08); }
+  .required { color: #e53e3e; margin-left: 2px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .agent-block { background: #f8faff; border: 1px solid #e2edf9; border-radius: 8px; padding: 16px 18px; margin-bottom: 12px; }
+  .agent-label { font-size: 12px; font-weight: 700; color: #1a56db; margin-bottom: 12px; }
+  .submit-row { margin-top: 28px; text-align: center; }
+  .btn { display: inline-block; background: #1a56db; color: #fff; border: none; border-radius: 7px; padding: 13px 40px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s; }
+  .btn:hover { background: #1649bb; }
+  .btn:disabled { background: #93aee8; cursor: not-allowed; }
+  .note { font-size: 12px; color: #718096; margin-top: 10px; }
+  .success { display: none; background: #f0fff4; border: 1px solid #9ae6b4; border-radius: 8px; padding: 24px; text-align: center; color: #276749; font-size: 14px; line-height: 1.8; margin-top: 20px; }
+  .error-msg { display: none; background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 14px 18px; color: #c53030; font-size: 13px; margin-top: 14px; }
+  @media (max-width: 540px) { .row, .row-3 { grid-template-columns: 1fr; } .card { padding: 20px 18px; } }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="logo">Nreservi</div>
+    <h1>Fiche Technique Partenaire 2026</h1>
+  </div>
+
+  <form id="ficheForm" onsubmit="handleSubmit(event)">
+
+    <div class="card">
+      <p class="section-title">Informations de l'agence</p>
+      <div class="field">
+        <label>Dénomination (raison sociale) <span class="required">*</span></label>
+        <input type="text" name="denomination" required placeholder="Ex : Besses Tourisme et Voyages SARL">
+      </div>
+      <div class="field">
+        <label>Adresse complète <span class="required">*</span></label>
+        <input type="text" name="adresse" required placeholder="Rue, quartier, wilaya">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Forme juridique <span class="required">*</span></label>
+          <select name="forme_juridique" required>
+            <option value="">— Sélectionner —</option>
+            <option>SARL</option><option>EURL</option><option>SPA</option>
+            <option>SNC</option><option>Entreprise individuelle</option><option>Autre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Capital social</label>
+          <input type="text" name="capital_social" placeholder="Ex : 100 000 DZD">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Téléphone <span class="required">*</span></label>
+          <input type="tel" name="telephone" required placeholder="05X XX XX XX">
+        </div>
+        <div class="field">
+          <label>Fax</label>
+          <input type="tel" name="fax" placeholder="023 XX XX XX">
+        </div>
+      </div>
+      <div class="field">
+        <label>Site web</label>
+        <input type="url" name="site_web" placeholder="https://...">
+      </div>
+    </div>
+
+    <div class="card" style="border-top:none;">
+      <p class="section-title">Directeur général</p>
+      <div class="field">
+        <label>Nom et prénom <span class="required">*</span></label>
+        <input type="text" name="dg_nom" required placeholder="M./Mme Nom Prénom">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Mobile <span class="required">*</span></label>
+          <input type="tel" name="dg_mobile" required placeholder="06X XX XX XX">
+        </div>
+        <div class="field">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" name="dg_email" required placeholder="directeur@agence.dz">
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:none;">
+      <p class="section-title">Responsable commercial</p>
+      <div class="field">
+        <label>Nom et prénom</label>
+        <input type="text" name="commercial_nom" placeholder="M./Mme Nom Prénom">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Mobile</label>
+          <input type="tel" name="commercial_mobile" placeholder="06X XX XX XX">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" name="commercial_email" placeholder="commercial@agence.dz">
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:none;">
+      <p class="section-title">Agents de réservations</p>
+      <div class="agent-block">
+        <div class="agent-label">Agent 1</div>
+        <div class="row-3">
+          <div class="field"><label>Nom et prénom</label><input type="text" name="agent1_nom" placeholder="Nom Prénom"></div>
+          <div class="field"><label>Mobile</label><input type="tel" name="agent1_mobile" placeholder="06X XX XX XX"></div>
+          <div class="field"><label>Email</label><input type="email" name="agent1_email" placeholder="agent@agence.dz"></div>
+        </div>
+      </div>
+      <div class="agent-block">
+        <div class="agent-label">Agent 2</div>
+        <div class="row-3">
+          <div class="field"><label>Nom et prénom</label><input type="text" name="agent2_nom" placeholder="Nom Prénom"></div>
+          <div class="field"><label>Mobile</label><input type="tel" name="agent2_mobile" placeholder="06X XX XX XX"></div>
+          <div class="field"><label>Email</label><input type="email" name="agent2_email" placeholder="agent@agence.dz"></div>
+        </div>
+      </div>
+      <div class="agent-block">
+        <div class="agent-label">Agent 3</div>
+        <div class="row-3">
+          <div class="field"><label>Nom et prénom</label><input type="text" name="agent3_nom" placeholder="Nom Prénom"></div>
+          <div class="field"><label>Mobile</label><input type="tel" name="agent3_mobile" placeholder="06X XX XX XX"></div>
+          <div class="field"><label>Email</label><input type="email" name="agent3_email" placeholder="agent@agence.dz"></div>
+        </div>
+      </div>
+      <div class="agent-block">
+        <div class="agent-label">Agent 4</div>
+        <div class="row-3">
+          <div class="field"><label>Nom et prénom</label><input type="text" name="agent4_nom" placeholder="Nom Prénom"></div>
+          <div class="field"><label>Mobile</label><input type="tel" name="agent4_mobile" placeholder="06X XX XX XX"></div>
+          <div class="field"><label>Email</label><input type="email" name="agent4_email" placeholder="agent@agence.dz"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:none; border-radius: 0 0 10px 10px;">
+      <div class="submit-row">
+        <button type="submit" class="btn" id="submitBtn">Envoyer la fiche technique</button>
+        <p class="note">Vos informations sont transmises en toute confidentialité à l'équipe Nreservi.<br>Notre service commercial vous contactera sous 24h.</p>
+        <div id="errorMsg" class="error-msg">Une erreur est survenue. Veuillez réessayer ou nous contacter directement à b2b@nreservi.com</div>
+      </div>
+      <div id="successMsg" class="success">
+        ✓ Votre fiche a bien été transmise à l'équipe Nreservi.<br>
+        Notre service commercial vous contactera sous 24h.<br><br>
+        <strong>b2b@nreservi.com &nbsp;|&nbsp; 0560 49 03 48</strong>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<script>
+async function handleSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('ficheForm');
+  const btn = document.getElementById('submitBtn');
+  const d = Object.fromEntries(new FormData(form));
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+
+  const body = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FICHE TECHNIQUE PARTENAIRE — NRESERVI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AGENCE
+Dénomination    : ${d.denomination || '—'}
+Adresse         : ${d.adresse || '—'}
+Forme juridique : ${d.forme_juridique || '—'}
+Capital social  : ${d.capital_social || '—'}
+Téléphone       : ${d.telephone || '—'}
+Fax             : ${d.fax || '—'}
+Site web        : ${d.site_web || '—'}
+
+DIRECTEUR GÉNÉRAL
+Nom             : ${d.dg_nom || '—'}
+Mobile          : ${d.dg_mobile || '—'}
+Email           : ${d.dg_email || '—'}
+
+RESPONSABLE COMMERCIAL
+Nom             : ${d.commercial_nom || '—'}
+Mobile          : ${d.commercial_mobile || '—'}
+Email           : ${d.commercial_email || '—'}
+
+AGENTS DE RÉSERVATIONS
+Agent 1 → ${d.agent1_nom || '—'} | ${d.agent1_mobile || '—'} | ${d.agent1_email || '—'}
+Agent 2 → ${d.agent2_nom || '—'} | ${d.agent2_mobile || '—'} | ${d.agent2_email || '—'}
+Agent 3 → ${d.agent3_nom || '—'} | ${d.agent3_mobile || '—'} | ${d.agent3_email || '—'}
+Agent 4 → ${d.agent4_nom || '—'} | ${d.agent4_mobile || '—'} | ${d.agent4_email || '—'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Soumis le : ${new Date().toLocaleString('fr-DZ')}
+  `.trim();
+
+  try {
+    const res = await fetch('https://formsubmit.co/ajax/nreservi@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: `Fiche Technique Partenaire 2026 — ${d.denomination}`,
+        _captcha: 'false',
+        _template: 'box',
+        message: body
+      })
+    });
+    const json = await res.json();
+    if (json.success === 'true' || json.success === true) {
+      form.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } else {
+      throw new Error('failed');
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer la fiche technique';
+    document.getElementById('errorMsg').style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
