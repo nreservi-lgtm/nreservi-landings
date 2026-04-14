@@ -30,6 +30,8 @@
   .chip.disabled { opacity: 0.4; cursor: not-allowed; }
   .text-input { width: 100%; padding: 9px 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 13px; color: #1a1a1a; outline: none; transition: border-color .15s; }
   .text-input:focus { border-color: #1a56db; }
+  .id-input { width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e0; border-radius: 8px; font-size: 14px; color: #1a1a1a; outline: none; transition: border-color .15s; }
+  .id-input:focus { border-color: #1a56db; }
   .submit-wrap { text-align: center; padding: 20px 0 4px; }
   .submit-btn { background: #1a56db; color: #fff; border: none; border-radius: 8px; padding: 13px 44px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .15s; }
   .submit-btn:hover { background: #1649bb; }
@@ -56,6 +58,21 @@
   </div>
 
   <form id="qForm" onsubmit="handleSubmit(event)">
+
+    <!-- IDENTIFICATION -->
+    <div class="section">
+      <div class="section-title"><div class="badge" style="background:#1a56db;color:#fff;">&#9679;</div> Votre identité</div>
+
+      <div class="question">
+        <div class="q-label">Nom de l'agence <span style="color:#e53e3e;">*</span></div>
+        <input type="text" class="id-input" id="nom_agence" required placeholder="Ex : TAIA TRAVEL" oninput="updateProgress()">
+      </div>
+
+      <div class="question" style="margin-bottom:0;">
+        <div class="q-label">Téléphone <span style="color:#e53e3e;">*</span></div>
+        <input type="tel" class="id-input" id="telephone" required placeholder="Ex : 0550 00 00 00" oninput="updateProgress()">
+      </div>
+    </div>
 
     <!-- AXE 1 -->
     <div class="section">
@@ -230,6 +247,10 @@ function updateProgress() {
   let count = Object.keys(answers).filter(k => answers[k] && answers[k].length > 0).length;
   const txt = document.getElementById('besoins_specifiques')?.value?.trim();
   if (txt) count = Math.min(count + 1, TOTAL);
+  const nom = document.getElementById('nom_agence')?.value?.trim();
+  const tel = document.getElementById('telephone')?.value?.trim();
+  if (nom) count = Math.min(count + 1, TOTAL);
+  if (tel) count = Math.min(count + 1, TOTAL);
   const pct = Math.round((count / TOTAL) * 100);
   document.getElementById('prog').style.width = pct + '%';
   document.getElementById('prog-label').textContent = count + ' / ' + TOTAL + ' complétées';
@@ -271,8 +292,20 @@ document.querySelectorAll('.chips').forEach(group => {
 async function handleSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
+  const errorMsg = document.getElementById('errorMsg');
+
+  const nomAgence = document.getElementById('nom_agence')?.value?.trim();
+  const telephone = document.getElementById('telephone')?.value?.trim();
+
+  if (!nomAgence || !telephone) {
+    errorMsg.textContent = "Veuillez renseigner le nom de l'agence et le téléphone.";
+    errorMsg.style.display = 'block';
+    return;
+  }
+
   btn.disabled = true;
   btn.textContent = 'Envoi en cours...';
+  errorMsg.style.display = 'none';
 
   const txt = document.getElementById('besoins_specifiques')?.value?.trim();
   if (txt) answers['besoins_specifiques'] = [txt];
@@ -281,14 +314,25 @@ async function handleSubmit(e) {
     k + ' : ' + v.join(', ')
   ).join('\n');
 
-  const body = `QUESTIONNAIRE PARTENAIRE NRESERVI\n${'─'.repeat(40)}\n\n${lines}\n\n${'─'.repeat(40)}\nSoumis le : ${new Date().toLocaleString('fr-DZ')}`;
+  const body = `QUESTIONNAIRE PARTENAIRE NRESERVI
+${'─'.repeat(40)}
+
+AGENCE    : ${nomAgence}
+TÉLÉPHONE : ${telephone}
+
+${'─'.repeat(40)}
+
+${lines}
+
+${'─'.repeat(40)}
+Soumis le : ${new Date().toLocaleString('fr-DZ')}`;
 
   try {
     const res = await fetch('https://formsubmit.co/ajax/nreservi@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
-        _subject: 'Questionnaire Partenaire B2B — Nreservi',
+        _subject: 'Questionnaire Partenaire B2B — ' + nomAgence,
         _captcha: 'false',
         _template: 'box',
         message: body
@@ -302,7 +346,8 @@ async function handleSubmit(e) {
   } catch {
     btn.disabled = false;
     btn.textContent = 'Envoyer mes réponses';
-    document.getElementById('errorMsg').style.display = 'block';
+    errorMsg.textContent = 'Une erreur est survenue. Contactez-nous à b2b@nreservi.com';
+    errorMsg.style.display = 'block';
   }
 }
 </script>
